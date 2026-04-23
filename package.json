@@ -1,22 +1,20 @@
 {
-  "name": "backend",
+  "name": "phonebookbackend",
   "version": "0.0.1",
-  "description": "",
+  "description": "phonebook backend",
   "license": "ISC",
-  "author": "Paul BOULESTEIX",
+  "author": "Paul Boulesteix",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch  --inspect index.js",
+    "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:ui": "rm -rf dist && cd ../FullStackOpen/part3/notesfrontend && npm run build && cp -r dist ../../../notesbackend",
+    "build:ui": "rm -rf dist && cd ../FullStackOpen/part3/phonebookfrontend && npm run build && cp -r dist ../../../phonebookbackend",
     "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.5.0",
     "morgan": "^1.10.1"
   }
 }
