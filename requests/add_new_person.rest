@@ -1,0 +1,7 @@
+POST http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+    "name":"VS CODE REST CLIENT POST TEST",
+    "number": "88-77-5323523"
+}
