@@ -1,24 +1,15 @@
-require('dotenv').config()
 const express = require('express')
 var morgan = require('morgan')
 const app = express()
-const Person = require('./models/person')
-
+app.use(express.json())
 
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) })
 
-
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
-app.use(requestLogger)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.use(express.static('dist'))
-app.use(express.json())
+
+
+
 
 let persons = [
     { 
@@ -55,7 +46,14 @@ const currentStatus = () => {
 
 }
 
-
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+app.use(requestLogger)
 
 app.get('/', (request, response) => {
     response.send('<h1>Hello World!</h1>')
@@ -66,9 +64,7 @@ app.get("/info",(request,response)=>{
 })
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then((persons) => {
-    response.json(persons)
-  })
+    response.json(persons) 
 })
 
 app.get("/api/persons/:id",(request,response)=> {
@@ -115,19 +111,15 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  const person = new Person({
+  const person = {
     name: body.name,
     number: body.number,
     id: generateId(),
-  })
+  }
 
   persons = persons.concat(person)
 
-
-  person.save().then((savedPerson)=>{
-    response.json(savedPerson)
-  })
-  
+  response.json(person)
 })
 
 
@@ -137,7 +129,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
