@@ -16,11 +16,21 @@ mongoose
 
 const personSchema = new mongoose.Schema({
     name: {
-    type: String,
-    minLength: 3,
-    required: true
+      type: String,
+      minLength: 3,
+      required: true
     },
-    number: String,
+    number: {
+      type:String,
+      minLength:8,
+      required:true,
+      validate: {
+        validator: function(v) {
+          return /^\d{2,3}-\d+$/i.test(v);
+        },
+        message: props => `${props.value} is not a valid phone number!`
+      },
+    },
 })
 
 personSchema.set('toJSON', {
@@ -30,5 +40,5 @@ personSchema.set('toJSON', {
     delete returnedObject.__v
   },
 })
-
+//Empty comment to update
 module.exports = mongoose.model('Person', personSchema)
